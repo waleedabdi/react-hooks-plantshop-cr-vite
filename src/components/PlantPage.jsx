@@ -7,13 +7,14 @@ function PlantPage() {
   const [plants, setPlants] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Load the backend catalog once, when the page first mounts.
+  // PlantPage owns shared state because the form, search, and catalog read or update it.
   useEffect(() => {
     fetch("http://localhost:6001/plants")
       .then((response) => response.json())
       .then(setPlants);
   }, []);
 
+  // Add the server-returned record so the UI uses its assigned id and data.
   function addPlant(plant) {
     setPlants((currentPlants) => [...currentPlants, plant]);
   }
