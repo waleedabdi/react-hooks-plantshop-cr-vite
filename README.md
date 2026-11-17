@@ -1,6 +1,6 @@
 # Plantsy
 
-Plantsy is a React plant inventory app that lets a store administrator view plants, add new inventory, mark plants sold out, and filter the catalog by name. Plant data is persisted through a local JSON Server API.
+Plantsy is a React plant inventory application. It loads a catalog from a local JSON Server API and lets administrators add plants, mark plants as sold out, and search the catalog by name.
 
 ## Screenshot
 
@@ -8,18 +8,30 @@ Plantsy is a React plant inventory app that lets a store administrator view plan
 
 ## Features
 
-- Loads the complete plant catalog when the page opens
-- Adds a plant to the catalog through a controlled API submission flow
-- Marks a plant sold out without removing it from the catalog
-- Filters plants in real time using a case-insensitive name search
-- Renders the original JSON Server catalog or alternate test data consistently
+- Loads the complete plant catalog on initial page render
+- Adds a new plant through the `New Plant` form
+- Sends plant creation and stock updates to JSON Server
+- Updates the inventory immediately in the React UI
+- Filters plants by name as the search query changes
+- Restores the full catalog when the search query is cleared
+- Includes Vitest and Testing Library coverage for each deliverable
+
+## Built With
+
+- React 18
+- Vite
+- JSON Server
+- Vitest
+- Testing Library
 
 ## Requirements
 
-- Node.js
+- Node.js 18 or newer
 - npm
 
 ## Installation
+
+Clone the repository and install dependencies:
 
 ```bash
 npm install
@@ -27,67 +39,75 @@ npm install
 
 ## Usage
 
-Start the backend API in one terminal:
+Start JSON Server in one terminal:
 
 ```bash
 npm run server
 ```
 
-The API runs at `http://localhost:6001`, with the plant collection available at `http://localhost:6001/plants`.
+The API is available at `http://localhost:6001`. The plant collection is at `http://localhost:6001/plants`.
 
-Start the React application in a second terminal:
+Start the Vite development server in a second terminal:
 
 ```bash
 npm run dev
 ```
 
-Open the Vite URL printed in the terminal, normally `http://localhost:5173`.
+Open the local URL shown by Vite. Vite normally uses `http://localhost:5173` if that port is available.
 
 ## API
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `GET` | `/plants` | Retrieve the plant catalog |
+| `GET` | `/plants` | Retrieve the complete plant catalog |
 | `POST` | `/plants` | Create a plant |
-| `PATCH` | `/plants/:id` | Update a plant's stock status |
+| `PATCH` | `/plants/:id` | Set `isInStock` to `false` |
 
-Create requests send a JSON body containing `name`, `image`, and `price`.
+A new plant uses the following JSON shape:
 
 ```json
 {
   "name": "Aloe",
   "image": "./images/aloe.jpg",
-  "price": 15.99
+  "price": "15.99"
 }
 ```
 
-## Tests
+## Testing
 
-Run the Vitest suite once:
+Run the complete suite once:
 
 ```bash
-npm test -- --run
+npm run test -- --run
 ```
 
-Run it in watch mode:
+Run tests in watch mode:
 
 ```bash
-npm test
+npm run test
 ```
 
 ## Project Structure
 
-- `src/components/PlantPage.jsx` owns catalog and search state
-- `src/components/NewPlantForm.jsx` creates plants through `POST`
-- `src/components/PlantList.jsx` renders the filtered catalog
-- `src/components/PlantCard.jsx` displays a plant and stock state
-- `src/components/Search.jsx` updates the search query
-- `db.json` stores the JSON Server data
+- `src/components/App.jsx` - application shell
+- `src/components/PlantPage.jsx` - catalog, search state, and API mutations
+- `src/components/NewPlantForm.jsx` - controlled submission flow for new plants
+- `src/components/Search.jsx` - controlled search input
+- `src/components/PlantList.jsx` - maps filtered plants into cards
+- `src/components/PlantCard.jsx` - individual plant presentation and stock button
+- `src/__tests__/` - Vitest component and behavior tests
+- `db.json` - local JSON Server data
+
+## Development Notes
+
+Keep catalog and search state in `PlantPage`, because it is the nearest shared owner for `NewPlantForm`, `Search`, and `PlantList`. Fetch catalog data once after mount with `useEffect`, and pass mutation callbacks down as props so state changes remain predictable.
+
+Do not commit `.env` files or credentials. The repository `.gitignore` already excludes environment files and common local build, dependency, and log directories.
 
 ## Contributing
 
-Create a feature branch, keep changes focused, and run the test suite before opening a pull request.
+Create a feature branch for each change, keep commits focused, run the test suite, and open a pull request into `main`.
 
-## Project Status
+## License
 
-The project is complete and available as a local React and JSON Server application.
+No license is currently specified for this project.
