@@ -2,6 +2,7 @@ import React from "react";
 
 function NewPlantForm({ onPlantAdded }) {
   function handleSubmit(event) {
+    // Prevent navigation and serialize the native form fields for the API.
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const plant = {

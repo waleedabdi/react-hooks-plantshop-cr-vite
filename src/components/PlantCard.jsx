@@ -1,6 +1,7 @@
 import React from "react";
 
 function PlantCard({ plant, onMarkSoldOut }) {
+  // Existing backend records do not define isInStock, so they start in stock.
   const isInStock = plant.isInStock !== false;
 
   return (

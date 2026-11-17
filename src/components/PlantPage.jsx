@@ -7,6 +7,7 @@ function PlantPage() {
   const [plants, setPlants] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Load the backend catalog once, when the page first mounts.
   useEffect(() => {
     fetch("http://localhost:6001/plants")
       .then((response) => response.json())
@@ -18,6 +19,7 @@ function PlantPage() {
   }
 
   function markSoldOut(plant) {
+    // Persist the stock change, while updating local state immediately for feedback.
     fetch(`http://localhost:6001/plants/${plant.id}`, {
       method: "PATCH",
       headers: {
@@ -35,6 +37,7 @@ function PlantPage() {
     );
   }
 
+  // Derive the visible catalog so clearing search restores every plant.
   const filteredPlants = plants.filter((plant) =>
     plant.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
