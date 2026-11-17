@@ -1,93 +1,93 @@
-# Phase 2 Code Challenge: Plantsy
+# Plantsy
 
-## Demo
+Plantsy is a React plant inventory app that lets a store administrator view plants, add new inventory, mark plants sold out, and filter the catalog by name. Plant data is persisted through a local JSON Server API.
 
-Use this gif as an example of how the app should work.
+## Screenshot
 
-![Demo GIF](./demo.gif)
+![Completed Plantsy application](./plantsy-screenshot.png)
 
-## Instructions
+## Features
 
-Welcome to Plantsy! You've been tasked with building out some features for the
-admin side of a plant store. The designers have put together the components and
-CSS. Now it's up to you to bring the features to life by adding stateful logic
-as well as persisting data to the backend via our API.
+- Loads the complete plant catalog when the page opens
+- Adds a plant to the catalog through a controlled API submission flow
+- Marks a plant sold out without removing it from the catalog
+- Filters plants in real time using a case-insensitive name search
+- Renders the original JSON Server catalog or alternate test data consistently
 
-Your job will be to make our app work according to the user stories you will
-find the [Deliverables](#Deliverables) section.
+## Requirements
 
-## Setup
+- Node.js
+- npm
 
-1. Run `npm install` in your terminal.
-2. Run `npm run server`. This will run your backend on port `6001`.
-3. In a new terminal, run `npm run dev`.
+## Installation
 
-Make sure to open [http://localhost:6001/plants](http://localhost:6001/plants)
-in the browser to verify that your backend is working before you proceed!
-
-## Endpoints
-
-The base URL for your backend is: `http://localhost:6001`
-
-## Deliverables
-
-As a user:
-
-1. When the app starts, I can see all plants.
-2. I can add a new plant to the page by submitting the form.
-3. I can mark a plant as "sold out".
-4. I can search for plants by their name and see a filtered list of plants.
-
-### Endpoints for Core Deliverables
-
-#### GET /plants
-
-Example Response:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Aloe",
-    "image": "./images/aloe.jpg",
-    "price": 15.99
-  },
-  {
-    "id": 2,
-    "name": "ZZ Plant",
-    "image": "./images/zz-plant.jpg",
-    "price": 25.98
-  }
-]
+```bash
+npm install
 ```
 
-#### POST `/plants`
+## Usage
 
-Required Headers:
+Start the backend API in one terminal:
 
-```js
-{
-  "Content-Type": "application/json"
-}
+```bash
+npm run server
 ```
 
-Request Object:
+The API runs at `http://localhost:6001`, with the plant collection available at `http://localhost:6001/plants`.
+
+Start the React application in a second terminal:
+
+```bash
+npm run dev
+```
+
+Open the Vite URL printed in the terminal, normally `http://localhost:5173`.
+
+## API
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `GET` | `/plants` | Retrieve the plant catalog |
+| `POST` | `/plants` | Create a plant |
+| `PATCH` | `/plants/:id` | Update a plant's stock status |
+
+Create requests send a JSON body containing `name`, `image`, and `price`.
 
 ```json
 {
-  "name": "string",
-  "image": "string",
-  "price": number
-}
-```
-
-Example Response:
-
-```json
-{
-  "id": 1,
   "name": "Aloe",
   "image": "./images/aloe.jpg",
   "price": 15.99
 }
 ```
+
+## Tests
+
+Run the Vitest suite once:
+
+```bash
+npm test -- --run
+```
+
+Run it in watch mode:
+
+```bash
+npm test
+```
+
+## Project Structure
+
+- `src/components/PlantPage.jsx` owns catalog and search state
+- `src/components/NewPlantForm.jsx` creates plants through `POST`
+- `src/components/PlantList.jsx` renders the filtered catalog
+- `src/components/PlantCard.jsx` displays a plant and stock state
+- `src/components/Search.jsx` updates the search query
+- `db.json` stores the JSON Server data
+
+## Contributing
+
+Create a feature branch, keep changes focused, and run the test suite before opening a pull request.
+
+## Project Status
+
+The project is complete and available as a local React and JSON Server application.
